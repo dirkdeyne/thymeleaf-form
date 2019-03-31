@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Thymeleaf post form</title>
+</head>
+<body>
+	<div th:fragment="info-form" th:remove="tag">
+		<h1>Form validation</h1>
+		<ul>
+		    <li th:each="err : ${#fields.errors('*')}" th:text="${err}" />
+		</ul>
+		<div th:if="${#fields.hasErrors('${infoForm.*}')}">
+			<p> oops error</p>
+		</div>
+		<form id="info-form" name="info" th:action="@{/form}" th:object="${infoForm}" method="post">
+			<div>
+				<ul>
+				    <li th:each="e : ${#fields.detailedErrors()}" th:class="${e.global}? globalerr : fielderr">
+				        <span th:text="${e.global}? '*' : ${e.fieldName}">The field name</span> |
+				        <span th:text="${e.message}">The error message</span>
+				    </li>
+				</ul>
+			</div>
+			<div>
+				<label class="control-label">Message</label> 
+				<input th:field="*{message}" type="text" th:errorclass="fieldError" />
+				<p th:if="${#fields.hasErrors('message')}" th:errors="*{message}">oops</p>
+			</div>
+			<div>
+				<label class="control-label">Post data</label> 
+				<input th:field="*{post}" type="checkbox" />
+				<p th:if="${#fields.hasErrors('post')}" th:errors="*{post}">oops</p>
+			</div>
+			<div>
+				<label class="control-label">you need to accept this ;-)</label>
+				<input th:field="*{accept}" type="checkbox" th:errorclass="fieldError" />
+				<p th:if="${#fields.hasErrors('accept')}" th:errors="*{accept}">oops</p>
+			</div>
+			<input type="submit" value="Save" />
+		</form>
+	</div>
+
+	<div th:fragment="info-success" th:remove="tag">
+		<p>Form successfully submitted</p>
+	</div>
+
+</body>
+</html>
