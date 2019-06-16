@@ -38,19 +38,17 @@ public class FormController {
 	*/
 	
 	@GetMapping("/form")
-	public String openForm(Model model) {
-		model.addAttribute("infoForm", new FormData());
-		return "form :: info-form";
+	public String openForm(FormData formData) {
+		return "form";
 	}
 	
 	@PostMapping("/form")
-	public String submitForm(@Valid @ModelAttribute FormData data, BindingResult result, Model model) {
-		System.err.println(data);
+	public String submitForm(@Valid FormData formData, BindingResult result, Model model) {
+		System.err.println(formData);
 		
 		if(result.hasErrors()) {
-			model.addAttribute("infoForm", data);
-			model.addAttribute(result);
-			System.err.println(result);
+//			model.addAttribute("infoForm", data);
+//			System.err.println(result);
 			return "form :: info-form";
 		}
 		
